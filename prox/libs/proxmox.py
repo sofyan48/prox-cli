@@ -8,11 +8,3 @@ def proxmox_auth(host, username, password):
         raise
     else:
         return pyproxmox(prox)
-
-def list_vm(prox):
-    try:
-        list_vm = prox.getClusterStatus()
-    except Exception :
-        raise
-
-    return list_vm

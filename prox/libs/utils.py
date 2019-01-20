@@ -3,9 +3,8 @@ import os
 import shutil
 import git
 import requests
-import zipfile
+import zipfile 
 from dotenv import load_dotenv
-from urllib.request import urlopen
 import coloredlogs
 import logging
 
@@ -13,7 +12,7 @@ APP_HOME = os.path.expanduser("~")
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 
-def question(word):
+def question(word): 
     answer = False
     while answer not in ["y", "n"]:
         answer = input("{} [y/n]? ".format(word)).lower().strip()
@@ -126,23 +125,6 @@ def create_file(file, path, value=None):
         return read_file(path+"/"+file)
     except Exception as e:
         print(e)
-
-def check_internet():
-    try:
-        urlopen("https://raw.githubusercontent.com")
-    except Exception as e:
-        print(e)
-    else:
-        return True
-
-
-def download(url):
-    try:
-        response = urlopen(url)
-    except Exception as e:
-        print(e)
-    else:
-        return response
 
 
 def check_folder(path):
