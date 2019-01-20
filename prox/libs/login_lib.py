@@ -1,4 +1,4 @@
-from passlib.hash import pbkdf2_sha256
+# from passlib.hash import pbkdf2_sha256
 from prox.libs import utils
 from prox.libs import proxmox
 import os
@@ -22,7 +22,7 @@ def create_env_file(username, password, auth_url = None, port = None):
 
 def dump_session(sess):
     try:
-        with open('/tmp/session.pkl', 'wb') as f:
+        with open('/tmp/prox.pkl', 'wb') as f:
             dill.dump(sess, f)
     except Exception:
         utils.log_err("Dump session failed")
@@ -32,7 +32,7 @@ def load_dumped_session():
     try:
         if check_session():
             sess = None
-            with open('/tmp/session.pkl', 'rb') as f:
+            with open('/tmp/prox.pkl', 'rb') as f:
                 sess = dill.load(f)
             return sess
         else:
@@ -44,24 +44,7 @@ def load_dumped_session():
 
 
 def check_session():
-    return os.path.isfile("/tmp/session.pkl")
-
-
-def login(username, password, auth_url):
-    password = pbkdf2_sha256.hash(password)
-    if os.path.exists(APP_HOME+"/.prox.env"):
-        print("Environment Exists Do You remove :")
-        checks = input("Y/N")
-        if checks == 'Y' or checks == 'y':
-            os.remove(APP_HOME+"/.prox.env")
-            create_env_file(username, password, auth_url)
-        else:
-            env = utils.get_env_values()
-            print(env['username'])
-
-    create_env_file(username, password, auth_url)
-
-    
+    return os.path.isfile("/tmp/prox.pkl")
 
 
 def logout():
@@ -69,6 +52,10 @@ def logout():
         os.remove(APP_HOME+"/.prox.env")
     else:
         print("Not Current Sessions")
+
+def connect_proxmox(host, username, password):
+    prox_at = proxmox.proxmox_auth(host, username, password)
+    return prox_at
 
 
 
