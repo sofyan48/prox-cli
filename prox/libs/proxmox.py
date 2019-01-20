@@ -1,4 +1,4 @@
-from pyproxmox import *
+from pyproxmox import prox_auth,pyproxmox
 
 
 def proxmox_auth(host, username, password):
@@ -7,7 +7,7 @@ def proxmox_auth(host, username, password):
     except Exception:
         raise
     else:
-        return prox
+        return pyproxmox(prox)
 
 def list_vm(prox):
     try:
