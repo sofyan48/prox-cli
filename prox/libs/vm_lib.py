@@ -15,3 +15,7 @@ def list_vm():
     vm_list = prox.getVm()['data']
     return vm_list
 
+def cluster_next():
+    prox = get_auth()
+    cl_next = prox.getClusterVmNextId()
+    return cl_next['data']
