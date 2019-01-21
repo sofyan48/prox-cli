@@ -10,10 +10,10 @@ import os
 class Ls(Base): 
     """
         usage:
-            ls cluster [-i | --iface] [-N NODE] [-s | --service]
+            ls cluster [-i | --iface] [-N NODE]
             ls vm [-n | --next] [-N NODE]
             ls container [-N NODE]
-            ls interface [-N NODE] [-I INTERFACE]
+            ls storage [-N NODE]
             
             
 
@@ -24,63 +24,13 @@ class Ls(Base):
         Options:
         -h --help                             Print usage
         -i --iface                            cluster interface
-        -s --service                          cluster service
         -n --next                             vm next
         -N node --node=NODE                   Get Node  default by 'pve'
-        -I node --interface=INTERFACE         Get Interface Details
     """
     def execute(self):
-        if self.args['cluster']:
-            if self.args['--service']:
-                try:
-                    node = self.args["--node"]
-                except Exception:
-                    node = None
-                if node:
-                    data = clusters_lib.cluster_service(node)
-                    if not data:
-                        utils.log_err("Data Not Found")
-                        exit()
-                    list_service = list()
-                    for i in data:
-                        data_service = {
-                            "name": i['name'],
-                            "state": i['state'],
-                            "desc": i['desc']
-                        }
-                        list_service.append(data_service)
-                    headers = {
-                        "name": "Service Name",
-                        "state": "Service State",
-                        "desc": "Description"
-                    }
-                    print(tabulate(list_service, headers=headers,tablefmt='grid'))
-                    exit()
-                data = clusters_lib.cluster_service("pve")
-                if not data:
-                    utils.log_err("Data Not Found")
-                    exit()
-                list_service = list()
-                for i in data:
-                    data_service = {
-                        "name": i['name'],
-                        "state": i['state'],
-                        "desc": i['desc']
-                    }
-                    list_service.append(data_service)
-                headers = {
-                    "name": "Service Name",
-                    "state": "Service State",
-                    "desc": "Description"
-                }
-                print(tabulate(list_service, headers=headers,tablefmt='grid'))
-                exit()
-            
+        if self.args['cluster']:            
             if self.args['--iface']:
-                try:
-                    node = self.args['--node']
-                except Exception:
-                    node = None
+                node = self.args['--node']
                 if not node:
                     utils.log_err("Set Your Node")
                     exit()
@@ -93,14 +43,12 @@ class Ls(Base):
                     data_interface = {
                         "interface": i['iface'],
                         "type": i['type'],
-                        "families": i['families']
                     }
                     list_interface.append(data_interface)
 
                 headers = {
                     "interface": "Interface",
                     "type": "Type",
-                    "families": "Families"
                 }
                 print(tabulate(list_interface, headers=headers, tablefmt='grid'))
                 exit()
@@ -196,28 +144,32 @@ class Ls(Base):
                 exit()
             print("WIP: Not Data In Testing")
 
-        if self.args['interface']:
-            def_node = "pve"
-            try:
-                node = self.args["--node"]
-            except Exception:
-                utils.log_info("Using Default Node : pve")
-                node = def_node
-            
-            try:
-                interface = self.args['interface']
-            except Exception:
-                interface = None
-
-            if not interface:
-                utils.log_err("Set Your Interface")
-                exit()
-            
-            data = network_lib.get_interface_details(node, interface)
+        if self.args['storage']:
+            node = self.args['--node']
+            if not node:
+                utils.log_warn("Using Default Node : pve")
+                node = "pve"
+            data = node_lib.get_storage(node)
             if not data:
                 utils.log_err("Data Not Found")
                 exit()
-            print("WIP: Not Data In Testing")
+            list_storage = list()
+            for i in data:
+                storage={
+                    "storage": i['storage'],
+                    "total": i["total"],
+                    "used": i["used"],
+                    "avail": i['avail']
+                }
+                list_storage.append(storage)
+            headers = {
+                "storage": "Name Storage",
+                "total": "Total",
+                "used": "Used",
+                "avail": "Available"
+            }
+            print(tabulate(list_storage, headers=headers, tablefmt='grid'))
+            exit()
             
 
         
