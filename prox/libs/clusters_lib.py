@@ -15,6 +15,10 @@ def list_cluster():
     cl_list = prox.getClusterStatus()
     return cl_list
 
+def cluster_service(node):
+    prox = get_auth()
+    node_service = prox.getNodeServiceList(node)
+    return node_service['data']
 
 
 

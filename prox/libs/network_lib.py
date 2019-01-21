@@ -9,7 +9,12 @@ def get_auth():
     else:
         return prox
 
-def get_network(node):
+def get_interface(node):
     prox = get_auth()
     network = prox.getNodeNetworks(node)
+    return network['data']
+
+def get_interface_details(node, interface):
+    prox = get_auth()
+    network = prox.getNodeInterface(node, interface)
     return network['data']
