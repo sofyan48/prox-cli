@@ -111,11 +111,6 @@ class pyproxmox:
         data = self.connect('get','cluster/status',None)
         return data
 
-    def getVm(self):
-        """Get cluster status information. Returns JSON"""
-        data = self.connect('get','nodes/pve/qemu',None)
-        return data
-
     def getClusterBackupSchedule(self):
         """List vzdump backup schedule. Returns JSON"""
         data = self.connect('get','cluster/backup',None)
@@ -128,6 +123,11 @@ class pyproxmox:
 
 
     # Node Methods
+    def getVm(self):
+        """Get cluster status information. Returns JSON"""
+        data = self.connect('get','nodes/pve/qemu',None)
+        return data
+
     def getNodeNetworks(self,node):
         """List available networks. Returns JSON"""
         data = self.connect('get','nodes/%s/network' % (node),None)
@@ -311,6 +311,7 @@ class pyproxmox:
     def getStorageVolumeData(self,node,storage,volume):
         """Get volume attributes. Returns JSON"""
         data = self.connect('get','nodes/%s/storage/%s/content/%s' % (node,storage,volume),None)
+        # data = self.connect('get','nodes/%s/storage/%s/content/' % (node,storage),None)
         return data
 
     def getStorageConfig(self,storage):

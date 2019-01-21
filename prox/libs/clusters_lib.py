@@ -17,8 +17,12 @@ def list_cluster():
 
 def cluster_service(node):
     prox = get_auth()
-    node_service = prox.getNodeServiceList(node)
-    return node_service['data']
+    cluster_service = prox.getNodeServiceList(node)
+    return cluster_service['data']
 
+def service_detail(node, service):
+    prox = get_auth()
+    detail_service = prox.getNodeServiceState(node, service)
+    return detail_service['data']
 
 
