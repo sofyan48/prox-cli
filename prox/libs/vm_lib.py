@@ -10,8 +10,8 @@ def get_auth():
     else:
         return prox
 
-def list_cluster():
+def list_vm():
     prox = get_auth()
-    cl_list = prox.getClusterStatus()
-    return cl_list
+    vm_list = prox.getVm()['data']
+    return vm_list
 

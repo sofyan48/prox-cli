@@ -1,6 +1,6 @@
 # from passlib.hash import pbkdf2_sha256
 from prox.libs import utils
-from prox.libs import proxmox
+from prox.libs import proxmox_lib
 import os
 import dill
 
@@ -54,7 +54,7 @@ def logout():
         print("Not Current Sessions")
 
 def connect_proxmox(host, username, password):
-    prox_at = proxmox.proxmox_auth(host, username, password)
+    prox_at = proxmox_lib.proxmox_auth(host, username, password)
     return prox_at
 
 
