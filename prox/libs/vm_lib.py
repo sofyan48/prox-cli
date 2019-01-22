@@ -19,3 +19,13 @@ def get_vm_status(node, vm_id):
     prox = get_auth()
     vm_status = prox.getVirtualStatus(node, vm_id)
     return vm_status['data']
+
+def get_vm_action(node, vm_id, action):
+    prox = get_auth()
+    vm_status = prox.getVirtualInfo(node, vm_id, action)
+    return vm_status['data']
+
+def get_vm_rrd(node, vm_id):
+    prox = get_auth()
+    vm_rrd = prox.getVirtualRRD(node, vm_id)
+    return vm_rrd['data']

@@ -291,6 +291,11 @@ class pyproxmox:
         data = self.connect('get','nodes/%s/qemu/%s/status/current' % (node,vmid),None)
         return data
 
+    def getVirtualInfo(self,node,vmid, action):
+        """Get virtual info configuration. Returns JSON"""
+        data = self.connect('get','nodes/%s/qemu/%s/%s' % (node,vmid, action),None)
+        return data
+
     def getVirtualConfig(self,node,vmid):
         """Get virtual machine configuration. Returns JSON"""
         data = self.connect('get','nodes/%s/qemu/%s/config' % (node,vmid),None)
