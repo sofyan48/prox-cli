@@ -16,7 +16,7 @@ class Create(Base):
             create                         Build Yaml File
 
         Options:
-        -h --help                             Print usage
+        -h --help                          Print usage
     """
     def execute(self):
         print("CREATE")
