@@ -2,21 +2,23 @@
 
 ## Setup Env
 Setup virtual environment
+
 ``` bash
 virtualenv -p python3 env
 ```
-Activated Virtualenv
+
+Activate virtualenv
 ``` bash
-source env/bin/activated
+source ./env/bin/activate
 ```
 
 ## Installing
-if your development mode
+In development mode
 ```
 pip install -e . 
 ```
 
-testing mode
+Testing mode
 ```
 pip install . 
 ```
