@@ -8,9 +8,80 @@ from dotenv import load_dotenv
 import coloredlogs
 import logging
 
+from prompt_toolkit import prompt
+from prompt_toolkit.contrib.completers import WordCompleter
+
 APP_HOME = os.path.expanduser("~")
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 
+
+def isint(number):
+    try:
+        to_float = float(number)
+        to_int = int(to_float)
+    except ValueError:
+        return False
+    else:
+        return to_float == to_int
+
+def isfloat(number):
+    try:
+        float(number)
+    except ValueError:
+        return False
+    else:
+        return True
+
+def repodata():
+    abs_path = os.path.dirname(os.path.realpath(__file__))
+    repo_file = "{}/templates/repo.yml".format(abs_path)
+    return yaml_parser(repo_file)
+
+def get_index(dictionary):
+    return [key for (key, value) in dictionary.items()]
+
+def check_key(dict, val):
+    try:
+        if dict[val]:
+            return True
+    except Exception:
+        return False
+
+def prompt_generator(form_title, fields):
+    if os.name == 'nt':
+        os.system('cls')
+    else:
+        os.system('clear')
+
+    print(form_title)
+
+    data = {}
+    for field in fields:
+        if field['type'] == 'TitleSelectOne':
+            print('{} : '.format(field['name']))
+            completer = WordCompleter(field['values'], ignore_case=True)
+            for v in field['values']:
+                print('- {}'.format(v))
+            text = None
+
+            while text not in field['values']:
+                text = prompt('Enter your choice : ', completer=completer)
+
+            data[field['key']] = text
+        elif field['type'] == 'TitleSelect':
+            print('{} : '.format(field['name']))
+            completer = WordCompleter(field['values'], ignore_case=True)
+            for v in field['values']:
+                print('- {}'.format(v))
+            data[field['key']] = prompt(
+                'Enter your choice or create new : ', completer=completer)
+        elif field['type'] == 'TitlePassword':
+            data[field['key']] = prompt(
+                '{} : '.format(field['name']), is_password=True)
+        else:
+            data[field['key']] = prompt('{} : '.format(field['name']))
+        print('------------------------------')
+    return data
 
 def question(word): 
     answer = False
