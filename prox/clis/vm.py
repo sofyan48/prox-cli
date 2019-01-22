@@ -33,7 +33,31 @@ class VM(Base):
         
         if self.args['status']:
             data = vm_lib.get_vm_status(node, vm_id)
-            print(data)
+            action = self.args['--action']
+            if action:
+                details_status = list()
+                for i in data:
+                    if i == action:
+                        if type(data[i]) == dict:
+                            details_status.append(data[i])
+                            break
+                        else:
+                            utils.log_info(i+" "+data[i])
+                            exit()
+                print(tabulate(details_status, headers="keys", tablefmt="grid"))
+                exit()
+
+            list_data = list()
+            for i in data:
+                if type(data[i]) != dict:
+                    list_data.append({
+                        "action": i
+                    })
+                else: 
+                    list_data.append({
+                        "action":i
+                    })
+            print(tabulate(list_data, headers="keys", tablefmt="grid"))
             exit()
 
         
