@@ -9,7 +9,7 @@ class VM(Base):
     """
         usage:
             vm [-N NODE] [-i VMID]
-            vm status [-N NODE] [-i VMID] [-a ACTION]
+            vm info [-N NODE] [-i VMID] [-a ACTION]
 
         Commands :
             vm                                list of vm
@@ -31,7 +31,7 @@ class VM(Base):
             utils.log_err("Set VM_ID : -i VM_ID")
             exit()
         
-        if self.args['status']:
+        if self.args['info']:
             data = vm_lib.get_vm_status(node, vm_id)
             action = self.args['--action']
             if action:
@@ -42,7 +42,7 @@ class VM(Base):
                             details_status.append(data[i])
                             break
                         else:
-                            utils.log_info(i+" "+data[i])
+                            utils.log_info(i+" "+str(data[i]))
                             exit()
                 print(tabulate(details_status, headers="keys", tablefmt="grid"))
                 exit()
