@@ -56,6 +56,21 @@ def get_storage_detail(node, storage):
             })
             return detail_storage
 
+def get_finish_task(node):
+    prox = get_auth()
+    list_finish = prox.getNodeFinishedTasks(node)
+    return list_finish
+
+def get_node_dns(node):
+    prox = get_auth()
+    list_dns = prox.getNodeDNS(node)
+    return list_dns['data']
+
+def get_node_status(node):
+    prox = get_auth()
+    list_status = prox.getNodeStatus(node)
+    return list_status['data']
+
 def get_storage_content(node, storage, volume):
     prox = get_auth()
     list_storage = prox.getStorageVolumeData(node, storage, volume)
