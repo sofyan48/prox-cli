@@ -111,7 +111,14 @@ class Node(Base):
                 list_action = list()
                 for i in data_status:
                     if i == action:
-                        list_action.append(data_status[i])
+                        if type(data_status[i]) == dict:
+                            list_action.append(data_status[i])
+                        elif type(data_status[i]) == list:
+                            for key in data_status[i]:
+                                utils.log_info(key)
+                        else:
+                            utils.log_info(data_status[i])
+                            exit()
                 print(tabulate(list_action, headers="keys" ,tablefmt='grid'))
                 exit()
             list_status = list()
