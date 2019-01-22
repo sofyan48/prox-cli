@@ -7,12 +7,14 @@ Options:
   -v, --version                          Print version information and quit
 
 Commands:
-  node          Node Option
-  ls        
-  interface     Cluster Interface
-  login         login
-  service       Service Cluster Option
+  node          Node Command
+  ls            List Command
+  interface     Interface Command
+  login         login Command
+  service       Service Command
   storage       Storage Command
+  create        Create Command
+  vm            VM Command
 
 Run 'prox COMMAND --help' for more information on a command.
 """
