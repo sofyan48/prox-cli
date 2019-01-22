@@ -9,8 +9,8 @@ Options:
 Commands:
   node          Node Command
   ls            List Command
-  interface     Interface Command
-  login         login Command
+  network       Network Command
+  login         Login Command
   service       Service Command
   storage       Storage Command
   create        Create Command
