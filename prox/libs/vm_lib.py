@@ -29,3 +29,8 @@ def get_vm_rrd(node, vm_id):
     prox = get_auth()
     vm_rrd = prox.getVirtualRRD(node, vm_id)
     return vm_rrd['data']
+
+def delete_vm(node, vm_id):
+    prox = get_auth()
+    vm_delete = prox.deleteVirtualMachine(node, vm_id)
+    return vm_delete

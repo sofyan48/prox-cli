@@ -18,3 +18,14 @@ def get_interface_details(node, interface):
     prox = get_auth()
     network = prox.getNodeInterface(node, interface)
     return network['data']
+
+def delete_node_network(node):
+    prox = get_auth()
+    list_network = prox.deleteNodeNetworkConfig(node)
+    return list_network['data']
+
+def delete_node_interface(node):
+    prox = get_auth()
+    list_network = prox.deleteNodeInterface(node)
+    return list_network['data']
+    
