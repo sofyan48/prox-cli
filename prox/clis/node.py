@@ -11,17 +11,24 @@ class Node(Base):
             node task [-N NODE] [-i VMID]
             node dns [-N NODE]
             node status [-N NODE] [-a ACTION]
-            
+            node log
+            node rrd [-a ACTION]
+            node beans          
 
         Commands :
-            clusters                          list of clusters
-            vm                                list of vm
+            task                              Task Command
+            dns                               list DNS
+            status                            Node Status
+            log                               Node Log Data
+            rrd
+            beans
 
         Options:
         -h --help                             Print usage
         -N node --node=NODE                   Get Node
-        -i vmid --vmid=vmid                   Get Task
+        -i vmid --vmid=VMID                   Get VM
         -a action --action=ACTION             Get Status
+        -p path --path=PATH                   Get PATH
     """
     def execute(self):
         node = self.args["--node"]
@@ -111,7 +118,14 @@ class Node(Base):
                 list_action = list()
                 for i in data_status:
                     if i == action:
-                        list_action.append(data_status[i])
+                        if type(data_status[i]) == dict:
+                            list_action.append(data_status[i])
+                        elif type(data_status[i]) == list:
+                            for key in data_status[i]:
+                                utils.log_info(key)
+                        else:
+                            utils.log_info(data_status[i])
+                            exit()
                 print(tabulate(list_action, headers="keys" ,tablefmt='grid'))
                 exit()
             list_status = list()
@@ -121,5 +135,37 @@ class Node(Base):
                 })
             print(tabulate(list_status, headers="keys" ,tablefmt='grid'))
             exit()
+
+        if self.args['log']:
+            data = node_lib.get_node_syslog(node)
+            list_log = list()
+            for i in data:
+                data_log = {
+                    "row": i['n'],
+                    "desc": i['t']
+                }
+                list_log.append(data_log)
+            headers = {
+                    "row": "No",
+                    "desc": "Description"
+                }
+            print(tabulate(list_log, headers=headers ,tablefmt='grid'))
+            exit()
+
+        if self.args['rrd']:
+            data = self.args['--action']
+            if data:
+                rrd_data = node_lib.get_node_rrd_data(node)
+                print(rrd_data)
+                exit()
+            data = node_lib.get_node_rrd(node)
+            print("Testing")
+            exit()
+
+        if self.args['beans']:
+            data = node_lib.get_node_beans(node)
+            print("Testing")
+            exit()
+
 
         

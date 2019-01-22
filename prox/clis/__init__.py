@@ -4,3 +4,4 @@ from .service import *
 from .interface import *
 from .storage import *
 from .node import *
+from .vm import *
