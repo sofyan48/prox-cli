@@ -7,11 +7,12 @@ Options:
   -v, --version                          Print version information and quit
 
 Commands:
-  create        Create Bless Project
-  deploy        Deploy Bless Project To Server
-  generate      Generate Bless Object
+  node          Node Option
+  ls        
+  interface     Cluster Interface
   login         login
-  run           Run Your Project
+  service       Service Cluster Option
+  storage       Storage Command
 
 Run 'prox COMMAND --help' for more information on a command.
 """
