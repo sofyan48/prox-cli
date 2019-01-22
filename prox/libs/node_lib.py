@@ -71,7 +71,28 @@ def get_node_status(node):
     list_status = prox.getNodeStatus(node)
     return list_status['data']
 
+def get_node_syslog(node):
+    prox = get_auth()
+    list_syslog= prox.getNodeSyslog(node)
+    return list_syslog['data']
+
+def get_node_rrd(node, path=None):
+    prox = get_auth()
+    png_rrd= prox.getNodeRRD(node)
+    return png_rrd
+
+def get_node_rrd_data(node, path=None):
+    prox = get_auth()
+    rrd_data= prox.getNodeRRDData(node)
+    return rrd_data
+
+def get_node_beans(node):
+    prox = get_auth()
+    beans_data= prox.getNodeBeans(node)
+    return beans_data['data']
+
 def get_storage_content(node, storage, volume):
     prox = get_auth()
     list_storage = prox.getStorageVolumeData(node, storage, volume)
     return list_storage['data']
+
