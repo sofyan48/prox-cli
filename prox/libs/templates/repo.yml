@@ -1,0 +1,56 @@
+kvm:
+  description: Create Virtual On KVM Mode
+  parameters:
+    ostemplate:
+      name: Template OS
+      desc:
+    vmid:
+      name: ID Virtual Machine
+      desc: To get your vm id see command | prox ls vm --next
+    cpus:
+      name: CPUS Option
+      desc: Choose Your CPU
+      default: 1
+    description:
+      name: description
+      desc: Set Your Desc virtual machine
+    hostname:
+      name: Hostname
+      desc: Set Hostname Virtual Machine
+    memory:
+      name: Memory
+      desc: Check your os spesification
+    password:
+      name: Password
+      desc: Set Password Virtual Machine
+    swap:
+      name: Swap
+      desc: Set Swap Virtual Machine
+      default: 1024
+
+container:
+  description: Create Virtual Machine Container Mode
+  paramaters:
+    vmid:
+      name: ID Virtual Machine
+      desc: To get your vm id see command | prox ls vm --next
+    cpus:
+      name: CPUS Option
+      desc: Choose Your CPU
+      default: 1
+    description:
+      name: description
+      desc: Set Your Desc virtual machine
+    hostname:
+      name: Hostname
+      desc: Set Hostname Virtual Machine
+    memory:
+      name: Memory
+      desc: Check your os spesification
+    password:
+      name: Password
+      desc: Set Password Virtual Machine
+    swap:
+      name: Swap
+      desc: Set Swap Virtual Machine
+      default: 1024
