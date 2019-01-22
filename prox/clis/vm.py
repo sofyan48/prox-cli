@@ -11,6 +11,7 @@ class VM(Base):
             vm [-N NODE] [-i VMID] [-a ACTION]
             vm info [-N NODE] [-i VMID] [-a ACTION]
             vm rrd [-N NODE] [-i VMID]
+            vm delete [-N NODE] [-i VMID]
 
 
         Commands :
