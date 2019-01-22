@@ -40,11 +40,18 @@ class Storage(Base):
             
             content = self.args['--content']
             if not content:
-                utils.log_err("Set Your Content")
+                content_storage = node_lib.get_node_storage_content(node, storage)
+                content_list = list()
+                print(tabulate(content_storage, headers="keys", tablefmt="grid"))
                 exit()
-            content_storage = node_lib.get_storage_content(node, storage, content)
-            print(content_storage)
+            content_storage = node_lib.get_node_storage_content(node, storage)
+            content_list = list()
+            for i in content_storage:
+                if content == i['content']:
+                    content_list.append(i)
+            print(tabulate(content_list, headers="keys", tablefmt="grid"))
             exit()
+        
 
         storage = self.args['--storage']
         if not storage:
