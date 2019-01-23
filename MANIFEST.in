@@ -2,6 +2,7 @@ exclude .gitignore
 include README.md
 include setup.cfg
 include requirements.txt
+include prox/libs/templates/repo.yml
 prune .cache
 prune .git
 prune build
