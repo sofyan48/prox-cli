@@ -101,4 +101,12 @@ def get_storage_detail(node, storage):
             })
             return detail_storage
 
+def get_os_template(node, storage, content):
+    content_storage = get_node_storage_content(node, storage)
+    content_list = list()
+    for i in content_storage:
+        if content == i['content']:
+            content_list.append(i)
+    return content_list
+
 

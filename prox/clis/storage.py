@@ -26,32 +26,27 @@ class Storage(Base):
         if not node:
             utils.log_info("Using Default Node : pve")
             node = "pve"
-        
+
         if self.args['content']:
             storage = self.args['--storage']
             if not storage:
                 utils.log_err("Set Your Storage")
                 exit()
-            
+
             storage = self.args['--storage']
             if not storage:
                 utils.log_err("Set Your Storage")
                 exit()
-            
+
             content = self.args['--content']
             if not content:
                 content_storage = node_lib.get_node_storage_content(node, storage)
                 content_list = list()
                 print(tabulate(content_storage, headers="keys", tablefmt="grid"))
                 exit()
-            content_storage = node_lib.get_node_storage_content(node, storage)
-            content_list = list()
-            for i in content_storage:
-                if content == i['content']:
-                    content_list.append(i)
+            content_list = node_lib.get_os_template(node, storage, content)
             print(tabulate(content_list, headers="keys", tablefmt="grid"))
             exit()
-        
 
         storage = self.args['--storage']
         if not storage:
