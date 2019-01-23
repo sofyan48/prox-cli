@@ -200,7 +200,7 @@ def init(stack=None, project=None):
             """
             if name_type['type'] == 'TitleSelect':
                 name_values = name_type['values']
-                form = utils.prompt_generator("Setup Your VM {}".format(
+                form = utils.prompt_generator("Setup Your {}".format(
                     field["project"]), [name_type])
                 if form["name"] in name_values:
                     form["just_child_val"] = True
@@ -213,7 +213,7 @@ def init(stack=None, project=None):
                     form.update(new_form_val)
                     form["just_child_val"] = False
             else:
-                form = utils.prompt_generator("Setup Your VM {}".format(
+                form = utils.prompt_generator("Setup Your {}".format(
                     field["project"]), f_form)
                 form["just_child_val"] = False
 

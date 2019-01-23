@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 import coloredlogs
 import logging
 import npyscreen
+import codecs
 
 from prompt_toolkit import prompt
 from prompt_toolkit.contrib.completers import WordCompleter
@@ -15,6 +16,66 @@ from prompt_toolkit.contrib.completers import WordCompleter
 APP_HOME = os.path.expanduser("~")
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 
+def initdir(manifest):
+    active_catalog = list()
+    for (k, v) in manifest["stack"].items():
+        stack_key = manifest["stack"][k]
+        if len(stack_key) > 0:
+            mkdir("{}/{}".format(manifest["deploy_dir"], k))
+            active_catalog.append(k)
+    return active_catalog
+
+def mkdir(dir):
+    if not os.path.isdir(dir):
+        os.makedirs(dir)
+
+def get_key(manifest_file):
+    try:
+        manifest = {
+            "stack": {
+                "pool": [],
+                "networks": [],
+                "deployments": [],
+                "clusters": [],
+                "instances": [],
+                "databases": [],
+                "others": []
+            }
+        }
+
+        prox_templates = codecs.open(
+            manifest_file, encoding='utf-8', errors='strict')
+        manifest["data"] = yaml.load(prox_templates.read())
+        manifest_data = eval(str(manifest["data"]))
+        del manifest_data["deploy"]
+        for (key, value) in manifest_data.items():
+            manifest["stack"][key] = [i for i, v in value.items()]
+        return manifest
+
+    except Exception:
+        raise
+
+def get_index(dictionary):
+    return [key for (key, value) in dictionary.items()]
+
+
+def do_deploy_dir(manifest_file):
+    try:
+        manifest = {}
+        manifest_dir = os.path.dirname(os.path.realpath(manifest_file))
+        manifest["deploy_dir"] = "{}/.deploy".format(manifest_dir)
+
+        if not os.path.isdir(manifest["deploy_dir"]):
+            os.makedirs(manifest["deploy_dir"])
+
+        key = get_key(manifest_file)
+        manifest["stack"] = key["stack"]
+        manifest["data"] = key["data"]
+
+        return manifest
+
+    except Exception:
+        raise
 
 def form_generator(form_title, fields):
     def myFunction(*args):
@@ -91,10 +152,6 @@ def repodata():
     abs_path = os.path.dirname(os.path.realpath(__file__))
     repo_file = "{}/templates/repo.yml".format(abs_path)
     return yaml_parser_file(repo_file)
-
-
-def get_index(dictionary):
-    return [key for (key, value) in dictionary.items()]
 
 
 def check_key(dict, val):
