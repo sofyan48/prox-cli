@@ -10,7 +10,15 @@ def get_auth():
     else:
         return prox
 
-def initialize(manifest_fie):
+def create_vm(node, post_data):
+    prox = get_auth()
+    data_create = prox.createVirtualMachine(node, post_data)
+    return data_create['data']
+
+
+def initialize(node, manifest_fie):
+    if not node:
+        node = "pve"
     init = list()
     utils.log_info("Initialization....")
     key = utils.do_deploy_dir(manifest_fie)
@@ -24,19 +32,18 @@ def initialize(manifest_fie):
 
             dest = "{}/{}/{}".format(key["deploy_dir"], stack, project)
             utils.log_info("Build {} {} template".format(project, stack))
-            
-
             utils.log_info("Done...")
             """ Stack init dict """
             stack_init = {}
             stack_init["dir"] = dest
             stack_init["project"] = project
             stack_init["stack"] = stack
+            stack_init["node"] = node
             stack_init["env_file"] = False
 
             if not utils.check_folder(dest):
                 utils.create_folder(dest)
-                
+
             if parameters:
                 utils.log_info("Create {} {} environment file".format(
                     project, stack))
@@ -65,3 +72,27 @@ def initialize(manifest_fie):
             init = set_sequence
     utils.yaml_create(init ,"{}/deploy.yml".format(key["deploy_dir"]))
     return init
+
+
+def do_create(initialize):
+    # dir_deploy = None
+    # project_name = None
+    # stack_name = None
+    env_parameters = list()
+    data_env = list()
+    node = None
+    data_params = list()
+
+    for deploy in initialize:
+        # dir_deploy = deploy['dir']
+        # project_name = deploy['project']
+        # stack_name = deploy['stack']
+        env_parameters = deploy['env_file']
+        data_env = utils.yaml_parser_file(env_parameters)
+        node = deploy['node']
+        data_params = data_env['parameters']
+
+    data_create = create_vm(node, data_params)
+    return data_create
+
+

@@ -1,17 +1,13 @@
 from prox.clis.base import Base
 from getpass import getpass
-from prox.libs import login_lib
-from prox.libs import node_lib
-from prox.libs import vm_lib
-from prox.libs import network_lib
-from prox.libs import utils
+from prox.libs import utils, create_libs
 from prox.libs import ncurses, prompt
 import os
 
 class Create(Base): 
     """
         usage:
-            create [-i] [-f PATH]
+            create [-N NODE] [-i] [-f PATH]
             create [-t TEMPLATE] [-i]
             create vm
             create pool
@@ -21,11 +17,17 @@ class Create(Base):
 
         Options:
         -h --help                           Print usage
-        -f PATH --file=PATH                 Set neo manifest file
-        -t TEMPLATE --template TEMPLATE     Create neo.yml, TEMPLATE is ENUM(clusters,instances,networks)
+        -f PATH --file=PATH                 Set prox manifest file
+        -t TEMPLATE --template TEMPLATE     Create prox.yml, TEMPLATE is ENUM(pool,instances,networks)
         -i --interactive                    Interactive form with ncurses mode
+        -N node --node=NODE                   Get Node
     """
     def execute(self):
+        node = self.args["--node"]
+        if not node:
+            utils.log_info("Using Default Node : pve")
+            node = "pve"
+
         if self.args["--template"]:
             if self.args["--template"] in ('pool', 'instances',
                                            'network', "storage"):
@@ -76,3 +78,13 @@ class Create(Base):
                 default_file = "prox.yml"
             else:
                 exit()
+
+        deploy_init = create_libs.initialize(node,default_file)
+
+        try:
+            create_libs.do_create(deploy_init)
+        except Exception as e:
+            raise
+            # utils.log_err(e)
+            # utils.log_err("Deploying Stack failed...")
+            exit()

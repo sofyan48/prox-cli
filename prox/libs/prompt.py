@@ -177,7 +177,9 @@ def dump(data):
     return d_dump
 
 
-def init(stack=None, project=None):
+def init(node= None,stack=None, project=None):
+    if not node:
+        node = "pve"
     select_stack = stack
     if not select_stack:
         select_stack = get_stack()
@@ -224,7 +226,7 @@ def init(stack=None, project=None):
 
             if not form["just_child_val"]:
                 form["stack"] = field["stack"]
-                form["template"] = field["project"]
+                form["template"] = node
                 """ Check if data is null """
                 null_data = 0
                 for k_data, v_data in form.items():

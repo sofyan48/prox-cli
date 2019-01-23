@@ -16,6 +16,18 @@ from prompt_toolkit.contrib.completers import WordCompleter
 APP_HOME = os.path.expanduser("~")
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 
+def get_project(manifest_file):
+    key = get_key(manifest_file)
+    manifest = list()
+    manifest += [service for service in key["stack"]["services"]]
+    manifest += [network for network in key["stack"]["networks"]]
+    manifest += [deploy for deploy in key["stack"]["deployments"]]
+    manifest += [cluster for cluster in key["stack"]["clusters"]]
+    manifest += [instance for instance in key["stack"]["instances"]]
+    manifest += [database for database in key["stack"]["databases"]]
+    manifest += [other for other in key["stack"]["others"]]
+    return manifest
+
 def initdir(manifest):
     active_catalog = list()
     for (k, v) in manifest["stack"].items():
