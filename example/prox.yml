@@ -1,0 +1,12 @@
+deploy:
+- instances.test
+instances:
+  test:
+    parameters:
+      description: testing
+      hostname: host.com
+      memory: '1024'
+      ostemplate: debian
+      password: testing
+      vmid: 104
+    template: vm
