@@ -17,26 +17,22 @@ class Login(Base):
         -h --help                             Print usage
     """
     def execute(self):
-        env = None
         if os.path.exists(APP_HOME+"/.prox.env"):
-            print("Environment Exists Do You remove :")
+            print(".prox.env environment file exists. Do You want to remove it?")
             checks = login_lib.utils.question("Choose Y/N ")
-            if checks == 'Y' or checks == 'y':
+            if checks == True:
                 username = input("Username: ")
                 password = getpass("Password: ")
                 auth_url = input("Host: ")
                 os.remove(APP_HOME+"/.prox.env")
                 login_lib.create_env_file(username, password, auth_url)
-            else:
-                env = login_lib.utils.get_env_values()
         else:
             username = input("Username: ")
             password = getpass("Password: ")
             auth_url = input("Host: ")
             login_lib.create_env_file(username, password, auth_url)
-            env = login_lib.utils.get_env_values()
 
-
+        env = login_lib.utils.get_env_values()
         prox = login_lib.connect_proxmox(env['project_url'], env['username'], env['password'])
 
         # check login
