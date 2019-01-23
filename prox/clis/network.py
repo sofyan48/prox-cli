@@ -5,10 +5,11 @@ from prox.libs import utils
 import os
 
 
-class Interface(Base): 
+class Network(Base): 
     """
         usage:
-            interface [-N NODE] [-I INTERFACE]
+            network [-N NODE] [-I INTERFACE]
+            network delete
 
         Commands :
             clusters                          list of clusters

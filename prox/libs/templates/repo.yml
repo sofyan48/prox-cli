@@ -1,56 +1,38 @@
-kvm:
-  description: Create Virtual On KVM Mode
-  parameters:
-    ostemplate:
-      name: Template OS
-      desc:
-    vmid:
-      name: ID Virtual Machine
-      desc: To get your vm id see command | prox ls vm --next
-    cpus:
-      name: CPUS Option
-      desc: Choose Your CPU
-      default: 1
-    description:
-      name: description
-      desc: Set Your Desc virtual machine
-    hostname:
-      name: Hostname
-      desc: Set Hostname Virtual Machine
-    memory:
-      name: Memory
-      desc: Check your os spesification
-    password:
-      name: Password
-      desc: Set Password Virtual Machine
-    swap:
-      name: Swap
-      desc: Set Swap Virtual Machine
-      default: 1024
-
-container:
-  description: Create Virtual Machine Container Mode
-  paramaters:
-    vmid:
-      name: ID Virtual Machine
-      desc: To get your vm id see command | prox ls vm --next
-    cpus:
-      name: CPUS Option
-      desc: Choose Your CPU
-      default: 1
-    description:
-      name: description
-      desc: Set Your Desc virtual machine
-    hostname:
-      name: Hostname
-      desc: Set Hostname Virtual Machine
-    memory:
-      name: Memory
-      desc: Check your os spesification
-    password:
-      name: Password
-      desc: Set Password Virtual Machine
-    swap:
-      name: Swap
-      desc: Set Swap Virtual Machine
-      default: 1024
+instances:
+  vm:
+    description: Create Virtual On KVM Mode
+    parameters:
+      ostemplate:
+        type: string
+        label: Template Os
+        desc: Template OS From Your Storage
+      vmid:
+        type: number
+        label: vmid
+        desc: To get your vm id see command | prox ls vm --next
+      cpus:
+        type: number
+        label: cpu
+        desc: Choose Your CPU
+        default: 1
+      description:
+        type: string
+        label: description
+        desc: Set Your Desc virtual machine
+      hostname:
+        type: string
+        label: Hostname
+        desc: Set Hostname Virtual Machine
+      memory:
+        type: string
+        label: Memory
+        desc: Check your os spesification
+      password:
+        type: string
+        label: Password
+        desc: Set Password Virtual Machine
+      swap:
+        type: string
+        label: Swap
+        desc: Set Swap Virtual Machine
+        default: 1024

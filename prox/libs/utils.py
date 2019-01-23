@@ -7,10 +7,102 @@ import zipfile
 from dotenv import load_dotenv
 import coloredlogs
 import logging
+import npyscreen
+
+from prompt_toolkit import prompt
+from prompt_toolkit.contrib.completers import WordCompleter
 
 APP_HOME = os.path.expanduser("~")
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 
+
+def form_generator(form_title, fields):
+    def myFunction(*args):
+        form = npyscreen.Form(name=form_title)
+        result = {}
+        for field in fields:
+            t = field["type"]
+            k = field["key"]
+            del field["type"]
+            del field["key"]
+
+            result[k] = form.add(getattr(npyscreen, t), **field)
+        form.edit()
+        return result
+
+    return npyscreen.wrapper_basic(myFunction)
+
+
+def prompt_generator(form_title, fields):
+    if os.name == 'nt':
+        os.system('cls')
+    else:
+        os.system('clear')
+
+    print(form_title)
+
+    data = {}
+    for field in fields:
+        if field['type'] == 'TitleSelectOne':
+            print('{} : '.format(field['name']))
+            completer = WordCompleter(field['values'], ignore_case=True)
+            for v in field['values']:
+                print('- {}'.format(v))
+            text = None
+
+            while text not in field['values']:
+                text = prompt('Enter your choice : ', completer=completer)
+
+            data[field['key']] = text
+        elif field['type'] == 'TitleSelect':
+            print('{} : '.format(field['name']))
+            completer = WordCompleter(field['values'], ignore_case=True)
+            for v in field['values']:
+                print('- {}'.format(v))
+            data[field['key']] = prompt(
+                'Enter your choice or create new : ', completer=completer)
+        elif field['type'] == 'TitlePassword':
+            data[field['key']] = prompt(
+                '{} : '.format(field['name']), is_password=True)
+        else:
+            data[field['key']] = prompt('{} : '.format(field['name']))
+        print('------------------------------')
+    return data
+
+
+def isint(number):
+    try:
+        to_float = float(number)
+        to_int = int(to_float)
+    except ValueError:
+        return False
+    else:
+        return to_float == to_int
+
+def isfloat(number):
+    try:
+        float(number)
+    except ValueError:
+        return False
+    else:
+        return True
+
+def repodata():
+    abs_path = os.path.dirname(os.path.realpath(__file__))
+    repo_file = "{}/templates/repo.yml".format(abs_path)
+    return yaml_parser_file(repo_file)
+
+
+def get_index(dictionary):
+    return [key for (key, value) in dictionary.items()]
+
+
+def check_key(dict, val):
+    try:
+        if dict[val]:
+            return True
+    except Exception:
+        return False
 
 def question(word): 
     answer = False
@@ -58,10 +150,18 @@ def template_git(url, dir):
         print(e)
         return False
 
+def yaml_parser_file(file):
+    with open(file, 'r') as stream:
+        try:
+            data = yaml.load(stream)
+            return data
+        except yaml.YAMLError as exc:
+            print(exc)
 
 def yaml_parser(stream):
     try:
         data = yaml.load(stream)
+        print(data)
         return data
     except yaml.YAMLError as exc:
         print(exc)
@@ -75,6 +175,16 @@ def yaml_create(stream, path):
             print(exc)
         else:
             return True
+
+def check_manifest_file():
+    prox_file = None
+    cwd = os.getcwd()
+    if os.path.exists("{}/prox.yaml".format(cwd)):
+        prox_file = "{}/prox.yaml".format(cwd)
+    if os.path.exists("{}/prox.yml".format(cwd)):
+        prox_file = "{}/prox.yml".format(cwd)
+    return prox_file
+
 
 def yaml_writeln(stream, path):
     with open(path, '+a') as outfile:
