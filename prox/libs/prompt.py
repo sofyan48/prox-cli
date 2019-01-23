@@ -1,5 +1,6 @@
 import os
 from prox.libs import utils
+from prox.libs import lamda_func
 
 
 def get_stack():
