@@ -177,7 +177,9 @@ def dump(data):
     return d_dump
 
 
-def init(stack=None, project=None):
+def init(node= None,stack=None, project=None):
+    if not node:
+        node = "pve"
     select_stack = stack
     if not select_stack:
         select_stack = get_stack()
@@ -200,7 +202,7 @@ def init(stack=None, project=None):
             """
             if name_type['type'] == 'TitleSelect':
                 name_values = name_type['values']
-                form = utils.prompt_generator("Setup Your VM {}".format(
+                form = utils.prompt_generator("Setup Your {}".format(
                     field["project"]), [name_type])
                 if form["name"] in name_values:
                     form["just_child_val"] = True
@@ -213,7 +215,7 @@ def init(stack=None, project=None):
                     form.update(new_form_val)
                     form["just_child_val"] = False
             else:
-                form = utils.prompt_generator("Setup Your VM {}".format(
+                form = utils.prompt_generator("Setup Your {}".format(
                     field["project"]), f_form)
                 form["just_child_val"] = False
 
@@ -224,7 +226,7 @@ def init(stack=None, project=None):
 
             if not form["just_child_val"]:
                 form["stack"] = field["stack"]
-                form["template"] = field["project"]
+                form["template"] = node
                 """ Check if data is null """
                 null_data = 0
                 for k_data, v_data in form.items():
