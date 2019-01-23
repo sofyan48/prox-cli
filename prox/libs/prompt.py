@@ -51,6 +51,7 @@ def setup_form(stack, project, parent=None):
         init["parent"] = parent
 
     repo = utils.repodata()[stack][project]
+
     default_form_name = {"type": "TitleText", "name": "Name", "key": "name"}
     if utils.check_key(repo, "lists"):
         repo_lists = repo["lists"]
@@ -199,7 +200,7 @@ def init(stack=None, project=None):
             """
             if name_type['type'] == 'TitleSelect':
                 name_values = name_type['values']
-                form = utils.prompt_generator("Setup {}".format(
+                form = utils.prompt_generator("Setup Your VM {}".format(
                     field["project"]), [name_type])
                 if form["name"] in name_values:
                     form["just_child_val"] = True
@@ -208,11 +209,11 @@ def init(stack=None, project=None):
                     new_form = eval(str(field["form"]))
                     del new_form[0]
                     new_form_val = utils.prompt_generator(
-                        "Setup {}".format(field["project"]), new_form)
+                        "Setup Your VM {}".format(field["project"]), new_form)
                     form.update(new_form_val)
                     form["just_child_val"] = False
             else:
-                form = utils.prompt_generator("Setup {}".format(
+                form = utils.prompt_generator("Setup Your VM {}".format(
                     field["project"]), f_form)
                 form["just_child_val"] = False
 
@@ -248,5 +249,5 @@ def init(stack=None, project=None):
         os.system('cls')
     else:
         os.system('clear')
-    utils.yaml_create("prox.yml", dump(data))
+    utils.yaml_create(dump(data), "prox.yml")
     return utils.read_file("prox.yml")

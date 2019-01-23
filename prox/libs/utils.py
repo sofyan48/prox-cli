@@ -7,6 +7,7 @@ import zipfile
 from dotenv import load_dotenv
 import coloredlogs
 import logging
+import npyscreen
 
 from prompt_toolkit import prompt
 from prompt_toolkit.contrib.completers import WordCompleter
@@ -15,37 +16,22 @@ APP_HOME = os.path.expanduser("~")
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 
-def isint(number):
-    try:
-        to_float = float(number)
-        to_int = int(to_float)
-    except ValueError:
-        return False
-    else:
-        return to_float == to_int
+def form_generator(form_title, fields):
+    def myFunction(*args):
+        form = npyscreen.Form(name=form_title)
+        result = {}
+        for field in fields:
+            t = field["type"]
+            k = field["key"]
+            del field["type"]
+            del field["key"]
 
-def isfloat(number):
-    try:
-        float(number)
-    except ValueError:
-        return False
-    else:
-        return True
+            result[k] = form.add(getattr(npyscreen, t), **field)
+        form.edit()
+        return result
 
-def repodata():
-    abs_path = os.path.dirname(os.path.realpath(__file__))
-    repo_file = "{}/templates/repo.yml".format(abs_path)
-    return yaml_parser(repo_file)
+    return npyscreen.wrapper_basic(myFunction)
 
-def get_index(dictionary):
-    return [key for (key, value) in dictionary.items()]
-
-def check_key(dict, val):
-    try:
-        if dict[val]:
-            return True
-    except Exception:
-        return False
 
 def prompt_generator(form_title, fields):
     if os.name == 'nt':
@@ -82,6 +68,41 @@ def prompt_generator(form_title, fields):
             data[field['key']] = prompt('{} : '.format(field['name']))
         print('------------------------------')
     return data
+
+
+def isint(number):
+    try:
+        to_float = float(number)
+        to_int = int(to_float)
+    except ValueError:
+        return False
+    else:
+        return to_float == to_int
+
+def isfloat(number):
+    try:
+        float(number)
+    except ValueError:
+        return False
+    else:
+        return True
+
+def repodata():
+    abs_path = os.path.dirname(os.path.realpath(__file__))
+    repo_file = "{}/templates/repo.yml".format(abs_path)
+    return yaml_parser_file(repo_file)
+
+
+def get_index(dictionary):
+    return [key for (key, value) in dictionary.items()]
+
+
+def check_key(dict, val):
+    try:
+        if dict[val]:
+            return True
+    except Exception:
+        return False
 
 def question(word): 
     answer = False
@@ -129,10 +150,18 @@ def template_git(url, dir):
         print(e)
         return False
 
+def yaml_parser_file(file):
+    with open(file, 'r') as stream:
+        try:
+            data = yaml.load(stream)
+            return data
+        except yaml.YAMLError as exc:
+            print(exc)
 
 def yaml_parser(stream):
     try:
         data = yaml.load(stream)
+        print(data)
         return data
     except yaml.YAMLError as exc:
         print(exc)
@@ -146,6 +175,16 @@ def yaml_create(stream, path):
             print(exc)
         else:
             return True
+
+def check_manifest_file():
+    prox_file = None
+    cwd = os.getcwd()
+    if os.path.exists("{}/prox.yaml".format(cwd)):
+        prox_file = "{}/prox.yaml".format(cwd)
+    if os.path.exists("{}/prox.yml".format(cwd)):
+        prox_file = "{}/prox.yml".format(cwd)
+    return prox_file
+
 
 def yaml_writeln(stream, path):
     with open(path, '+a') as outfile:
