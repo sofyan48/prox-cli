@@ -80,11 +80,11 @@ class Create(Base):
                 exit()
 
         deploy_init = create_libs.initialize(node,default_file)
-
+        result = list()
         try:
-            create_libs.do_create(deploy_init)
+            result = create_libs.do_create(deploy_init)
         except Exception as e:
-            raise
-            # utils.log_err(e)
-            # utils.log_err("Deploying Stack failed...")
+            utils.log_err(e)
+            utils.log_err("Deploying Stack failed...")
             exit()
+        utils.log_info(result)

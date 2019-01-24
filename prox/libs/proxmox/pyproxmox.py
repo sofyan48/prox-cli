@@ -396,6 +396,7 @@ class pyproxmox:
         Create or restore a virtual machine. Returns JSON
         """
         data = self.connect('post',"nodes/%s/qemu" % (node), post_data)
+        print(data)
         return data
         
     def resetVirtualMachine(self,node,vmid):

@@ -12,8 +12,8 @@ class Network(Base):
             network delete
 
         Commands :
-            clusters                          list of clusters
-            vm                                list of vm
+            network                          list of network
+            network delete                   delete network
 
         Options:
         -h --help                             Print usage
