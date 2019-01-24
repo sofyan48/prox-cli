@@ -1,5 +1,4 @@
 from prox.clis.base import Base
-from getpass import getpass
 from prox.libs import login_lib
 import os
 
