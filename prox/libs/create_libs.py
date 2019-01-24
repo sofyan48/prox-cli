@@ -12,8 +12,21 @@ def get_auth():
 
 def create_vm(node, post_data):
     prox = get_auth()
-    data_create = prox.createVirtualMachine(node, post_data)
-    return data_create['data']
+    try:
+        data_create = prox.createVirtualMachine(node, post_data)
+    except Exception as e:
+        print(e)
+    else:
+        return data_create
+
+def create_containers(node, post_data):
+    prox = get_auth()
+    try:
+        data_create = prox.createOpenvzContainer(node, post_data)
+    except Exception as e:
+        print(e)
+    else:
+        return data_create
 
 
 def initialize(node, manifest_fie):
@@ -39,6 +52,7 @@ def initialize(node, manifest_fie):
             stack_init["project"] = project
             stack_init["stack"] = stack
             stack_init["node"] = node
+            stack_init["template"] = key["data"][stack][project]['template']
             stack_init["env_file"] = False
 
             if not utils.check_folder(dest):
@@ -82,6 +96,7 @@ def do_create(initialize):
     data_env = list()
     node = None
     data_params = list()
+    template = None
 
     for deploy in initialize:
         # dir_deploy = deploy['dir']
@@ -91,8 +106,14 @@ def do_create(initialize):
         data_env = utils.yaml_parser_file(env_parameters)
         node = deploy['node']
         data_params = data_env['parameters']
+        template = deploy['template']
 
-    data_create = create_vm(node, data_params)
+    if template == 'containers':
+        data_create = create_containers(node, data_params)
+    elif template == 'vm':
+        data_create = create_vm(node, data_params)
+    else:
+        utils.log_err("COMING SOON")
     return data_create
 
 

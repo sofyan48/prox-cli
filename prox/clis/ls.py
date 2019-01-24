@@ -10,12 +10,11 @@ import os
 class Ls(Base): 
     """
         usage:
-            ls cluster [-i | --iface] [-N NODE]
+            ls cluster [-N NODE]
             ls vm [-n | --next] [-N NODE]
             ls container [-N NODE]
             ls storage [-N NODE]
-            
-            
+            ls network [-N NODE]
 
         Commands :
             clusters                          list of clusters
@@ -23,35 +22,35 @@ class Ls(Base):
 
         Options:
         -h --help                             Print usage
-        -i --iface                            cluster interface
         -n --next                             vm next
         -N node --node=NODE                   Get Node  default by 'pve'
     """
     def execute(self):
-        if self.args['cluster']:            
-            if self.args['--iface']:
-                node = self.args['--node']
-                if not node:
-                    utils.log_err("Set Your Node")
-                    exit()
-                data = network_lib.get_interface(node)
-                if not data:
-                    utils.log_err("Data Not Found")
-                    exit()
-                list_interface = list()
-                for i in data:
-                    data_interface = {
-                        "interface": i['iface'],
-                        "type": i['type'],
-                    }
-                    list_interface.append(data_interface)
-
-                headers = {
-                    "interface": "Interface",
-                    "type": "Type",
-                }
-                print(tabulate(list_interface, headers=headers, tablefmt='grid'))
+        if self.args['network']:
+            node = self.args['--node']
+            if not node:
+                node="pve"
+                utils.log_warn("Using Default Node | -N node to set node")
+            data = network_lib.get_interface(node)
+            if not data:
+                utils.log_err("Data Not Found")
                 exit()
+            list_interface = list()
+            for i in data:
+                data_interface = {
+                    "interface": i['iface'],
+                    "type": i['type'],
+                }
+                list_interface.append(data_interface)
+
+            headers = {
+                "interface": "Interface",
+                "type": "Type",
+            }
+            print(tabulate(list_interface, headers=headers, tablefmt='grid'))
+            exit()
+            
+        if self.args['cluster']:            
             headers = {
                 'nodeid': "NODE" , 
                 'ip' : "IP", 

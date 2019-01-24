@@ -2,6 +2,7 @@ from prox.clis.base import Base
 from getpass import getpass
 from prox.libs import utils, create_libs
 from prox.libs import ncurses, prompt
+from tabulate import tabulate
 import os
 
 class Create(Base): 
@@ -80,11 +81,13 @@ class Create(Base):
                 exit()
 
         deploy_init = create_libs.initialize(node,default_file)
-
+        result = list()
         try:
-            create_libs.do_create(deploy_init)
+            result = create_libs.do_create(deploy_init)
         except Exception as e:
-            raise
-            # utils.log_err(e)
-            # utils.log_err("Deploying Stack failed...")
+            utils.log_err(e)
+            utils.log_err("Deploying Stack failed...")
             exit()
+        list_result = list()
+        list_result.append(result)
+        print(tabulate(list_result, tablefmt='grid'))
