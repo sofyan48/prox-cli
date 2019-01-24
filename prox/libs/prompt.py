@@ -1,6 +1,6 @@
 import os
 from prox.libs import utils
-from prox.libs import lamda_func
+from prox.libs.lamda_func import *
 
 
 def get_stack():
@@ -37,7 +37,7 @@ def get_project(templates):
         return None
 
 
-def setup_form(stack, project, parent=None):
+def setup_form(node, stack, project, parent=None):
     init = {
         "form": [],
         "depend": [],
@@ -105,7 +105,7 @@ def setup_form(stack, project, parent=None):
                             "name": prop["label"],
                             "key": index,
                             "scroll_exit": True,
-                            "values": globals()[func_name](),
+                            "values": globals()[func_name](node,"local"),
                             "max_height": 7,
                             "value": [
                                 0,
@@ -121,10 +121,10 @@ def setup_form(stack, project, parent=None):
     return init
 
 
-def exec_form(stack, project):
+def exec_form(node, stack, project):
     form = {}
     f_init = list()
-    parent_form = setup_form(stack, project)
+    parent_form = setup_form(node,stack, project)
     f_init.append(parent_form)
     if len(parent_form["depend"]) > 0:
         for depend in parent_form["depend"]:
@@ -132,21 +132,26 @@ def exec_form(stack, project):
             depend_stack = repo[0]
             depend_project = repo[1]
             depend_parent = depend["key"]
-            depend_form = setup_form(
+            depend_form = setup_form(node,
                 depend_stack, depend_project, parent=depend_parent)
             f_init.append(depend_form)
     form["init"] = list(reversed(f_init))
     return form
 
 
-def dump(data):
+def dump(node,data):
     d_dump = {"deploy": []}
     d_depend = []
     for d_yml in data:
         if d_yml["just_child_val"]:
             d_depend.append({"key": d_yml["parent"], "val": d_yml["name"]})
         else:
-            pre_yml = {d_yml["name"]: {"template": d_yml["template"]}}
+            pre_yml = {
+                d_yml["name"]: {
+                    "template": d_yml["template"],
+                    "node": node
+                    }
+                }
             for k, v in d_yml.items():
                 if k not in [
                         "name", "template", "stack", "parent", "just_child_val"
@@ -188,7 +193,7 @@ def init(node= None,stack=None, project=None):
     if not select_project:
         select_project = get_project(select_stack)
 
-    fields = exec_form(select_stack, select_project)
+    fields = exec_form(node, select_stack, select_project)
 
     data = list()
 
@@ -226,7 +231,7 @@ def init(node= None,stack=None, project=None):
 
             if not form["just_child_val"]:
                 form["stack"] = field["stack"]
-                form["template"] = node
+                form["template"] = field["project"]
                 """ Check if data is null """
                 null_data = 0
                 for k_data, v_data in form.items():
@@ -251,5 +256,5 @@ def init(node= None,stack=None, project=None):
         os.system('cls')
     else:
         os.system('clear')
-    utils.yaml_create(dump(data), "prox.yml")
+    utils.yaml_create(dump(node, data), "prox.yml")
     return utils.read_file("prox.yml")

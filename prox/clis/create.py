@@ -34,16 +34,16 @@ class Create(Base):
                 tmpl = self.args["--template"]
 
                 if self.args["--interactive"]:
-                    ncurses.init(stack=tmpl)
+                    ncurses.init(node, stack=tmpl)
                 else:
-                    prompt.init(stack=tmpl)
+                    prompt.init(node, stack=tmpl)
             exit()
 
         if self.args["vm"]:
             if self.args["--interactive"]:
-                print(ncurses.init(stack="instances", project="vm"))
+                print(ncurses.init(node, stack="instances", project="vm"))
             else:
-                print(prompt.init(stack="instances", project="vm"))
+                print(prompt.init(node, stack="instances", project="vm"))
 
         set_file = self.args["--file"]
         default_file = utils.check_manifest_file()
@@ -62,9 +62,9 @@ class Create(Base):
 
             if q_stack:
                 if self.args["--interactive"]:
-                    print(ncurses.init())
+                    print(ncurses.init(node))
                 else:
-                    print(prompt.init())
+                    print(prompt.init(node))
                 q_deploy = utils.question("Continue to deploy? ")
                 if q_deploy:
                     default_file = "prox.yml"
