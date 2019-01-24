@@ -6,6 +6,47 @@ instances:
         type: string
         label: Template Os
         desc: Template OS From Your Storage
+        dependences: "func:get_os_template_iso" 
+      vmid:
+        type: number
+        label: vmid
+        desc: To get your vm id see command | prox ls vm --next
+        dependences: "func:vm_next" 
+      cpus:
+        type: number
+        label: cpu
+        desc: Choose Your CPU
+        default: 1
+      description:
+        type: string
+        label: Description
+        desc: Set Your Desc virtual machine
+      hostname:
+        type: string
+        label: Hostname
+        desc: Set Hostname Virtual Machine
+      memory:
+        type: number
+        label: Memory
+        desc: Check your os spesification
+      password:
+        type: string
+        label: Password
+        desc: Set Password Virtual Machine
+      swap:
+        type: string
+        label: Swap
+        desc: Set Swap Virtual Machine
+        default: 1024
+
+  containers:
+    description: Create Virtual On KVM Mode
+    parameters:
+      ostemplate:
+        type: string
+        label: Template Os
+        desc: Template OS From Your Storage
+        dependences: "func:get_os_template_vz" 
       vmid:
         type: number
         label: vmid

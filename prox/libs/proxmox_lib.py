@@ -1,4 +1,4 @@
-from pyproxmox import prox_auth,pyproxmox
+from .proxmox.pyproxmox import prox_auth,pyproxmox
 import urllib3
 
 urllib3.disable_warnings()
