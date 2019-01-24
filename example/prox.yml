@@ -1,12 +1,12 @@
 deploy:
-- instances.test
+- instances.prox
 instances:
-  test:
+  prox:
+    node: pve
     parameters:
-      description: testing
-      hostname: host.com
+      boot: d
+      cores: '1'
+      description: From Prox-CLI
       memory: '1024'
-      ostemplate: debian
-      password: testing
-      vmid: 104
+      vmid: '104'
     template: vm

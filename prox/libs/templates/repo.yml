@@ -2,6 +2,10 @@ instances:
   vm:
     description: Create Virtual On KVM Mode
     parameters:
+      name:
+        type: string
+        label: Instance Name
+        desc: Set Name Instance
       vmid:
         type: string
         label: VMID

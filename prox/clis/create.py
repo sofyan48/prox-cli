@@ -2,6 +2,7 @@ from prox.clis.base import Base
 from getpass import getpass
 from prox.libs import utils, create_libs
 from prox.libs import ncurses, prompt
+from tabulate import tabulate
 import os
 
 class Create(Base): 
@@ -87,4 +88,6 @@ class Create(Base):
             utils.log_err(e)
             utils.log_err("Deploying Stack failed...")
             exit()
-        utils.log_info(result)
+        list_result = list()
+        list_result.append(result)
+        print(tabulate(list_result, tablefmt='grid'))

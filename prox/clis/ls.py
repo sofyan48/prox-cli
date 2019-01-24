@@ -36,7 +36,6 @@ class Ls(Base):
                 utils.log_err("Data Not Found")
                 exit()
             list_interface = list()
-            print(data)
             for i in data:
                 data_interface = {
                     "interface": i['iface'],
