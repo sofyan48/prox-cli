@@ -12,6 +12,12 @@ class VM(Base):
             vm info [-N NODE] [-i VMID] [-a ACTION]
             vm rrd [-N NODE] [-i VMID]
             vm delete [-N NODE] [-i VMID]
+            vm start [-N NODE] [-i VMID]
+            vm stop [-N NODE] [-i VMID]
+            vm reboot [-N NODE] [-i VMID]
+            vm poweroff [-N NODE] [-i VMID]
+            vm reset [-N NODE] [-i VMID]
+            vm suspend [-N NODE] [-i VMID]
 
 
         Commands :
@@ -30,11 +36,11 @@ class VM(Base):
             node = "pve"
 
         vm_id = self.args["--vmid"]
-        if not vm_id:
-            utils.log_err("Set VM_ID : -i VM_ID")
-            exit()
-        
+
         if self.args['info']:
+            if not vm_id:
+                utils.log_err("Set VM_ID : -i VM_ID")
+                exit()
             data = vm_lib.get_vm_status(node, vm_id)
             action = self.args['--action']
             if action:
@@ -65,8 +71,121 @@ class VM(Base):
 
         if self.args['rrd']:
             # not complete no representing data in process
+            if not vm_id:
+                utils.log_err("Set VM_ID : -i VM_ID")
+                exit()
             data = vm_lib.get_vm_rrd(node, vm_id)
             utils.log_info("Coming soon")
+            exit()
+
+        if self.args['start']:
+            cur_dir = os.getcwd()
+            manifest_file = None
+            
+            if utils.read_file(cur_dir+"/prox.yml"):
+                vm_id = None
+                node = None
+                manifest_file = utils.yaml_parser_file(cur_dir+"/prox.yml")
+                for i in manifest_file['instances']:
+                    node = manifest_file['instances'][i]['node']
+                    vm_id = manifest_file['instances'][i]['parameters']['vmid']
+            else:
+                vm_id = self.args["--vmid"]
+                if not vm_id:
+                    utils.log_err("Set VM_ID : -i VM_ID")
+                    exit()
+            utils.log_info(node)
+            utils.log_info(vm_id)
+            exit()
+        if self.args['stop']:
+            cur_dir = os.getcwd()
+            manifest_file = None
+            if utils.read_file(cur_dir+"/prox.yml"):
+                vm_id = None
+                node = None
+                manifest_file = utils.yaml_parser_file(cur_dir+"/prox.yml")
+                for i in manifest_file['instances']:
+                    node = manifest_file['instances'][i]['node']
+                    vm_id = manifest_file['instances'][i]['parameters']['vmid']
+            else:
+                vm_id = self.args["--vmid"]
+                if not vm_id:
+                    utils.log_err("Set VM_ID : -i VM_ID")
+                    exit()
+            utils.log_info(node)
+            utils.log_info(vm_id)
+            exit()
+        if self.args['reboot']:
+            cur_dir = os.getcwd()
+            manifest_file = None
+            if utils.read_file(cur_dir+"/prox.yml"):
+                vm_id = None
+                node = None
+                manifest_file = utils.yaml_parser_file(cur_dir+"/prox.yml")
+                for i in manifest_file['instances']:
+                    node = manifest_file['instances'][i]['node']
+                    vm_id = manifest_file['instances'][i]['parameters']['vmid']
+            else:
+                vm_id = self.args["--vmid"]
+                if not vm_id:
+                    utils.log_err("Set VM_ID : -i VM_ID")
+                    exit()
+            utils.log_info(node)
+            utils.log_info(vm_id)
+            exit()
+        if self.args['suspend']:
+            cur_dir = os.getcwd()
+            manifest_file = None
+            if utils.read_file(cur_dir+"/prox.yml"):
+                vm_id = None
+                node = None
+                manifest_file = utils.yaml_parser_file(cur_dir+"/prox.yml")
+                for i in manifest_file['instances']:
+                    node = manifest_file['instances'][i]['node']
+                    vm_id = manifest_file['instances'][i]['parameters']['vmid']
+            else:
+                vm_id = self.args["--vmid"]
+                if not vm_id:
+                    utils.log_err("Set VM_ID : -i VM_ID")
+                    exit()
+            utils.log_info(node)
+            utils.log_info(vm_id)
+            exit()
+        if self.args['poweroff']:
+            cur_dir = os.getcwd()
+            manifest_file = None
+            if utils.read_file(cur_dir+"/prox.yml"):
+                vm_id = None
+                node = None
+                manifest_file = utils.yaml_parser_file(cur_dir+"/prox.yml")
+                for i in manifest_file['instances']:
+                    node = manifest_file['instances'][i]['node']
+                    vm_id = manifest_file['instances'][i]['parameters']['vmid']
+            else:
+                vm_id = self.args["--vmid"]
+                if not vm_id:
+                    utils.log_err("Set VM_ID : -i VM_ID")
+                    exit()
+            utils.log_info(node)
+            utils.log_info(vm_id)
+            exit()
+        if self.args['reset']:
+            cur_dir = os.getcwd()
+            manifest_file = None
+            if utils.read_file(cur_dir+"/prox.yml"):
+                vm_id = None
+                node = None
+                manifest_file = utils.yaml_parser_file(cur_dir+"/prox.yml")
+                for i in manifest_file['instances']:
+                    node = manifest_file['instances'][i]['node']
+                    vm_id = manifest_file['instances'][i]['parameters']['vmid']
+            else:
+                vm_id = self.args["--vmid"]
+                if not vm_id:
+                    utils.log_err("Set VM_ID : -i VM_ID")
+                    exit()
+            utils.log_info(node)
+            utils.log_info(vm_id)
             exit()
 
         action = self.args['--action']
@@ -79,6 +198,9 @@ class VM(Base):
             exit()
         
         if action:
+            if not vm_id:
+                utils.log_err("Set VM_ID : -i VM_ID")
+                exit()
             # Not Fix in View Error detecting tabulate
             data_vm = vm_lib.get_vm_detail(node, vm_id)
             # list_data_vm = list()
@@ -99,10 +221,3 @@ class VM(Base):
                         exit
             # print(tabulate(data_vm_fix, headers="keys", tablefmt="grid"))
             exit()
-
-        
-
-
-
-
-        
