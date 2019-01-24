@@ -50,7 +50,7 @@ def check_session():
 def logout():
     if os.path.exists(APP_HOME+"/.prox.env"):
         os.remove(APP_HOME+"/.prox.env")
-        os.remove(APP_HOME+"/tmp/prox.pkl")
+        os.remove("/tmp/prox.pkl")
     else:
         print("Not Current Sessions")
 
