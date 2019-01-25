@@ -10,6 +10,8 @@ def get_auth(session=None):
             exit()
         else:
             return prox
+    else:
+        return session
 
 def get_vm_detail(node, vm_id, session=None):
     prox = get_auth(session)
