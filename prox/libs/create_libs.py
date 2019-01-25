@@ -1,17 +1,21 @@
 from prox.libs import login_lib
 from prox.libs import utils
 
-def get_auth():
-    try:
-        prox = login_lib.load_dumped_session()
-    except Exception as e:
-        print(e)
-        exit()
-    else:
-        return prox
 
-def create_vm(node, post_data):
-    prox = get_auth()
+def get_auth(session=None):
+    if not session:
+        try:
+            prox = login_lib.load_dumped_session()
+        except Exception as e:
+            print(e)
+            exit()
+        else:
+            return prox
+    else:
+        return session
+
+def create_vm(node, post_data, session=None):
+    prox = get_auth(session)
     try:
         data_create = prox.createVirtualMachine(node, post_data)
     except Exception as e:
@@ -19,8 +23,8 @@ def create_vm(node, post_data):
     else:
         return data_create
 
-def create_containers(node, post_data):
-    prox = get_auth()
+def create_containers(node, post_data, session=None):
+    prox = get_auth(session)
     try:
         data_create = prox.createOpenvzContainer(node, post_data)
     except Exception as e:
