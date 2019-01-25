@@ -1,82 +1,85 @@
 from prox.libs import login_lib
 from prox.libs import utils
 
-def get_auth():
-    try:
-        prox = login_lib.load_dumped_session()
-    except Exception as e:
-        print(e)
-        exit()
+def get_auth(session=None):
+    if not session:
+        try:
+            prox = login_lib.load_dumped_session()
+        except Exception as e:
+            print(e)
+            exit()
+        else:
+            return prox
     else:
-        return prox
+        return session
 
-def list_vm_by_node(node):
-    prox = get_auth()
+def list_vm_by_node(node, session=None):
+    prox = get_auth(session)
     vm_list = prox.getNodeVirtualIndex(node)
     return vm_list['data']
 
-def list_container_by_node(node):
-    prox = get_auth()
+def list_container_by_node(node, session=None):
+    prox = get_auth(session)
     vm_list = prox.getNodeContainerIndex(node)
     return vm_list['data']
 
-def vm_next():
-    prox = get_auth()
+def vm_next(session=None):
+    prox = get_auth(session)
     vm_next = prox.getClusterVmNextId()
     return vm_next['data']
 
-def get_finish_task(node):
-    prox = get_auth()
+def get_finish_task(node, session=None):
+    prox = get_auth(session)
     list_finish = prox.getNodeFinishedTasks(node)
     return list_finish
 
-def get_node_dns(node):
-    prox = get_auth()
+def get_node_dns(node, session=None):
+    prox = get_auth(session)
     list_dns = prox.getNodeDNS(node)
     return list_dns['data']
 
-def get_node_status(node):
-    prox = get_auth()
+def get_node_status(node, session=None):
+    prox = get_auth(session)
     list_status = prox.getNodeStatus(node)
     return list_status['data']
 
-def get_node_syslog(node):
-    prox = get_auth()
+def get_node_syslog(node, session=None):
+    prox = get_auth(session)
     list_syslog= prox.getNodeSyslog(node)
     return list_syslog['data']
 
-def get_node_rrd(node, path=None):
-    prox = get_auth()
+def get_node_rrd(node, path=None, session=None):
+    prox = get_auth(session)
     png_rrd= prox.getNodeRRD(node)
     return png_rrd
 
-def get_node_rrd_data(node, path=None):
-    prox = get_auth()
+def get_node_rrd_data(node, path=None, session=None):
+    prox = get_auth(session)
     rrd_data= prox.getNodeRRDData(node)
     return rrd_data
 
-def get_node_beans(node):
-    prox = get_auth()
+def get_node_beans(node, session=None):
+    prox = get_auth(session)
     beans_data= prox.getNodeBeans(node)
     return beans_data['data']
 
-def get_storage_volume(node, storage, volume):
-    prox = get_auth()
+def get_storage_volume(node, storage, volume, session=None):
+    prox = get_auth(session)
     list_storage = prox.getStorageVolumeData(node, storage, volume)
     return list_storage['data']
 
-def get_node_storage_content(node,storage):
-    prox = get_auth()
+def get_node_storage_content(node,storage, session=None):
+    prox = get_auth(session)
     list_storage = prox.getNodeStorageContent(node, storage)
     return list_storage['data']
 
-def get_storage(node):
-    prox = get_auth()
+def get_storage(node, session=None):
+    prox = get_auth(session)
     list_storage = prox.getNodeStorage(node)
     return list_storage['data']
 
-def get_storage_detail(node, storage):
-    prox = get_auth()
+def get_storage_detail(node, storage, session=None):
+    prox = get_auth(session)
     try:
         data = prox.getNodeStorage(node)
     except Exception as e:
@@ -101,8 +104,8 @@ def get_storage_detail(node, storage):
             })
             return detail_storage
 
-def get_os_template(node, storage, content):
-    content_storage = get_node_storage_content(node, storage)
+def get_os_template(node, storage, content, session=None):
+    content_storage = get_node_storage_content(node, storage, session)
     content_list = list()
     for i in content_storage:
         if content == i['content']:
