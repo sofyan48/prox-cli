@@ -16,7 +16,7 @@ class VM(Base):
             vm stop [-N NODE] [-i VMID]
             vm reboot [-N NODE] [-i VMID]
             vm poweroff [-N NODE] [-i VMID]
-            vm reset [-N NODE] [-i VMID]
+            vm remote [-N NODE] [-i VMID]
             vm suspend [-N NODE] [-i VMID]
 
 
@@ -89,13 +89,14 @@ class VM(Base):
                 for i in manifest_file['instances']:
                     node = manifest_file['instances'][i]['node']
                     vm_id = manifest_file['instances'][i]['parameters']['vmid']
+                    vm_data = vm_lib.start_vm(node, vm_id)
             else:
                 vm_id = self.args["--vmid"]
                 if not vm_id:
                     utils.log_err("Set VM_ID : -i VM_ID")
                     exit()
-            utils.log_info(node)
-            utils.log_info(vm_id)
+            vm_data = vm_lib.start_vm(node, vm_id)
+            utils.log_info(vm_data)
             exit()
         if self.args['stop']:
             cur_dir = os.getcwd()
@@ -112,8 +113,8 @@ class VM(Base):
                 if not vm_id:
                     utils.log_err("Set VM_ID : -i VM_ID")
                     exit()
-            utils.log_info(node)
-            utils.log_info(vm_id)
+            vm_data = vm_lib.stop_vm(node, vm_id)
+            utils.log_info(vm_data)
             exit()
         if self.args['reboot']:
             cur_dir = os.getcwd()
@@ -130,8 +131,8 @@ class VM(Base):
                 if not vm_id:
                     utils.log_err("Set VM_ID : -i VM_ID")
                     exit()
-            utils.log_info(node)
-            utils.log_info(vm_id)
+            vm_data = vm_lib.reset_vm(node, vm_id)
+            utils.log_info(vm_data)
             exit()
         if self.args['suspend']:
             cur_dir = os.getcwd()
@@ -148,8 +149,8 @@ class VM(Base):
                 if not vm_id:
                     utils.log_err("Set VM_ID : -i VM_ID")
                     exit()
-            utils.log_info(node)
-            utils.log_info(vm_id)
+            vm_data = vm_lib.suspesn_vm(node, vm_id)
+            utils.log_info(vm_data)
             exit()
         if self.args['poweroff']:
             cur_dir = os.getcwd()
@@ -166,10 +167,10 @@ class VM(Base):
                 if not vm_id:
                     utils.log_err("Set VM_ID : -i VM_ID")
                     exit()
-            utils.log_info(node)
-            utils.log_info(vm_id)
+            vm_data = vm_lib.shutdown_vm(node, vm_id)
+            utils.log_info(vm_data)
             exit()
-        if self.args['reset']:
+        if self.args['remote']:
             cur_dir = os.getcwd()
             manifest_file = None
             if utils.read_file(cur_dir+"/prox.yml"):
@@ -184,8 +185,8 @@ class VM(Base):
                 if not vm_id:
                     utils.log_err("Set VM_ID : -i VM_ID")
                     exit()
-            utils.log_info(node)
-            utils.log_info(vm_id)
+            vm_data = vm_lib.vnc_vm(node, vm_id)
+            utils.log_info(vm_data)
             exit()
 
         action = self.args['--action']

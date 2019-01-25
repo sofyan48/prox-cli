@@ -34,3 +34,60 @@ def delete_vm(node, vm_id):
     prox = get_auth()
     vm_delete = prox.deleteVirtualMachine(node, vm_id)
     return vm_delete
+
+def reset_vm(node, vm_id):
+    prox = get_auth()
+    vm = prox.resetVirtualMachine(node, vm_id)
+    if vm['data']:
+        return vm['data']
+    else:
+        return vm['error']
+
+def resume_vm(node, vm_id):
+    prox = get_auth()
+    vm = prox.resumeVirtualMachine(node, vm_id)
+    if vm['data']:
+        return vm['data']
+    else:
+        return vm['error']
+
+def start_vm(node, vm_id):
+    prox = get_auth()
+    vm = prox.startVirtualMachine(node, vm_id)
+    if vm['data']:
+        return vm['data']
+    else:
+        return vm['error']
+
+def shutdown_vm(node, vm_id):
+    prox = get_auth()
+    vm = prox.shutdownVirtualMachine(node, vm_id)
+    if vm['data']:
+        return vm['data']
+    else:
+        return vm['error']
+
+def stop_vm(node, vm_id):
+    prox = get_auth()
+    vm = prox.stopVirtualMachine(node, vm_id)
+    if vm['data']:
+        return vm['data']
+    else:
+        return vm['error']
+
+def suspesn_vm(node, vm_id):
+    prox = get_auth()
+    vm = prox.suspendVirtualMachine(node, vm_id)
+    if vm['data']:
+        return vm['data']
+    else:
+        return vm['error']
+
+
+def vnc_vm(node, vm_id):
+    prox = get_auth()
+    vm = prox.vncproxyVirtualMachine(node, vm_id)
+    if vm['data']:
+        return vm['data']
+    else:
+        return vm['error']
