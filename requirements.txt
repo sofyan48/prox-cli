@@ -30,7 +30,7 @@ py==1.7.0
 pylint==2.1.1
 pytest==4.1.1
 python-dotenv==0.8.2
-PyYAML==3.13
+PyYAML==5.4
 query-string==2018.11.20
 requests==2.18.0
 six==1.11.0
